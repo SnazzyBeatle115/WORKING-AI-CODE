@@ -6,19 +6,19 @@ then compare it to every student
 
 import cv2
 import face_recognition
-
+import time
 
 # * server calls this with list of recieved images
 def recognize_face(images):
     # print("iamges",images)
     imgs = get_image(images)
-    print("IMGS", len(imgs))
+    # print("IMGS", len(imgs))
     # print("img",imgs)
     encoded = encode_image(imgs)
-    print("Encoded", len(encoded))
+    # print("Encoded", len(encoded))
     # print("encoded",encoded)
     result = compare_faces(encoded)
-    print("result",result)
+    # print("result",result)
     return result
 
 # * Given a list of imgs, returns list of cv2 imgs
@@ -40,14 +40,29 @@ def encode_image (imgs):
 # * Given a list of encoded imgs, compares the imgs to every img in the database
 # ! for now just compare to preset img
 def compare_faces(imgs):
-    known = cv2.imread("images/mrmusk.jpg", 0)
+    known = cv2.imread("images/Known.jpg", 0)
     known = cv2.cvtColor(known, cv2.COLOR_BGR2RGB)
     
     known_encoding = encode_image([known])
-    print(len(known_encoding))
-    print("res", face_recognition.compare_faces(known_encoding, imgs[0]))
+    # print(len(known_encoding))
+    # print("res", face_recognition.compare_faces(known_encoding, imgs[0]))
 
-    print(len(imgs))
+    # print(len(imgs))
     return [face_recognition.compare_faces(known_encoding, _) for _ in imgs]
 
-print(recognize_face(["images/mrmusk2.jpg"]))
+startingtime = int( time.time() )
+print(recognize_face(["images/Unknown1.jpg"]))
+endingtime = int( time.time() )
+print("Time taken for 1 image:",endingtime-startingtime)
+startingtime = int( time.time() )
+print(recognize_face(["images/Unknown1.jpg", "images/mrmusk.jpg"]))
+endingtime = int( time.time() )
+print("Time taken for 2 images:",endingtime-startingtime)
+startingtime = int( time.time() )
+print(recognize_face(["images/Unknown1.jpg", "images/mrmusk.jpg", "images/mrmusk2.jpg"]))
+endingtime = int( time.time() )
+print("Time taken for 3 images:",endingtime-startingtime)
+startingtime = int( time.time() )
+print(recognize_face(["images/Unknown1.jpg", "images/mrmusk.jpg", "images/mrmusk2.jpg", "images/mrmusk2.jpg", "images/mrmusk2.jpg", "images/mrmusk2.jpg", "images/mrmusk2.jpg", "images/mrmusk2.jpg", "images/mrmusk2.jpg", "images/mrmusk2.jpg"]))
+endingtime = int( time.time() )
+print("Time taken for 10 images:",endingtime-startingtime)
